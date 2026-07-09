@@ -1,0 +1,650 @@
+/* Bonkey Math — marketing site stylesheet.
+   Architecture mirrors the sibling Bonkey Puzzles marketing site
+   (bonkey-games docs/design/handoff/site/site.css) on the same design
+   system: same component classes (.site-nav, .hero, .section, .card,
+   .btn, .badge, .store-badge, .site-footer), same brand tokens, same
+   Baloo 2 / Nunito type. Plain CSS, no build step, no third-party
+   scripts beyond the Google Fonts import below. */
+
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap");
+
+:root {
+  --teal: #16b8ae;
+  --teal-dark: #0e9d95;
+  --coral: #ff6f61;
+  --coral-dark: #e85d50;
+  --amber: #ffb13c;
+  --violet: #9b7be8;
+  --sky: #3fb6e8;
+  --ink: #243042;
+  --cream: #fff6ec;
+  --cream-dark: #f5ece0;
+  --muted: #8a94a6;
+  /* Darker than --coral/--coral-dark specifically for small text on light
+     backgrounds (WCAG AA 4.5:1) — --coral itself is ~2.7:1 on cream/white
+     and is reserved for large fills/CTAs, not small text. */
+  --coral-text: #d14538;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.7;
+}
+
+a {
+  color: var(--teal);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--teal-dark);
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 0 0 12px 0;
+  z-index: 300;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* ─── NAV ─────────────────────────────────────────── */
+.site-nav {
+  background: #fff;
+  border-bottom: 2px solid var(--cream-dark);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-logo {
+  font-family: "Baloo 2", cursive;
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1;
+  text-decoration: none !important;
+  color: inherit;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-logo img {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+
+.nav-logo .t {
+  color: var(--teal);
+}
+
+.nav-logo .c {
+  color: var(--coral);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.25rem;
+  margin-left: auto;
+  align-items: center;
+  list-style: none;
+}
+
+.nav-links a {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--teal);
+  text-decoration: none;
+}
+
+.nav-cta {
+  background: var(--teal) !important;
+  color: #fff !important;
+  padding: 0.42rem 1rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+}
+
+.nav-cta:hover {
+  background: var(--teal-dark) !important;
+}
+
+/* Mobile nav toggle (CSS-only) */
+.nav-toggle {
+  display: none;
+}
+
+.nav-hamburger {
+  display: none;
+  margin-left: auto;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2.5px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: 0.2s;
+}
+
+@media (max-width: 700px) {
+  .nav-hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 62px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem 1.5rem 1.5rem;
+    border-bottom: 2px solid var(--cream-dark);
+    gap: 0.25rem;
+  }
+
+  .nav-toggle:checked ~ .nav-inner .nav-links {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--cream-dark);
+    font-size: 1rem;
+  }
+
+  .nav-links li:last-child a {
+    border: none;
+  }
+
+  .nav-cta {
+    display: inline-block;
+    margin-top: 0.5rem;
+    text-align: center;
+    padding: 0.6rem;
+    border-radius: 10px;
+  }
+}
+
+/* ─── PAGE HEADER (interior pages) ───────────────── */
+.page-header {
+  background: linear-gradient(140deg, var(--teal) 0%, var(--sky) 100%);
+  color: #fff;
+  text-align: center;
+  padding: 3.5rem 1.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  top: -70px;
+  right: -50px;
+  pointer-events: none;
+}
+
+.page-header::after {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 111, 97, 0.25);
+  bottom: -40px;
+  left: 10%;
+}
+
+.page-header h1 {
+  font-family: "Baloo 2", cursive;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+  position: relative;
+}
+
+.page-header p {
+  margin-top: 0.6rem;
+  font-size: 1.05rem;
+  opacity: 0.9;
+  font-weight: 600;
+  position: relative;
+}
+
+/* ─── SECTIONS ────────────────────────────────────── */
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.section-sm {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.section-title {
+  font-family: "Baloo 2", cursive;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.section-sub {
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+/* ─── CARDS ───────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+}
+
+/* ─── BUTTONS ─────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.8rem 1.8rem;
+  border-radius: 12px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn-teal {
+  background: var(--teal);
+  color: #fff;
+}
+
+.btn-teal:hover {
+  background: var(--teal-dark);
+  color: #fff;
+}
+
+.btn-coral {
+  background: var(--coral);
+  color: #fff;
+}
+
+.btn-coral:hover {
+  background: var(--coral-dark);
+  color: #fff;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--teal);
+  color: var(--teal);
+}
+
+.btn-outline:hover {
+  background: var(--teal);
+  color: #fff;
+}
+
+.btn-dark {
+  background: var(--ink);
+  color: #fff;
+}
+
+.btn-dark:hover {
+  background: #1a2338;
+  color: #fff;
+}
+
+.btn-lg {
+  padding: 1rem 2.4rem;
+  font-size: 1.05rem;
+  border-radius: 14px;
+}
+
+/* ─── BADGE CHIPS ─────────────────────────────────── */
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  letter-spacing: 0.04em;
+}
+
+.badge-teal {
+  background: rgba(22, 184, 174, 0.12);
+  color: var(--teal-dark);
+}
+
+.badge-muted {
+  background: #eee;
+  color: #888;
+}
+
+/* ─── PROSE (legal/policy pages) ─────────────────── */
+.prose h2 {
+  font-family: "Baloo 2", cursive;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin: 2.2rem 0 0.5rem;
+}
+
+.prose p {
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.prose ul {
+  color: #555;
+  margin: 0.5rem 0 1rem 1.4rem;
+}
+
+.prose li {
+  margin-bottom: 0.4rem;
+}
+
+.prose a {
+  color: var(--teal);
+}
+
+/* ─── CURRICULUM LADDER ───────────────────────────── */
+.ladder {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  counter-reset: rung;
+}
+
+.ladder li {
+  counter-increment: rung;
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.25rem;
+  box-shadow: var(--card-shadow);
+  border-left: 4px solid var(--rung-color, var(--teal));
+}
+
+.ladder li::before {
+  content: counter(rung);
+  font-family: "Baloo 2", cursive;
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: #fff;
+  background: var(--rung-color, var(--teal));
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.ladder li h3 {
+  font-family: "Baloo 2", cursive;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+
+.ladder li p {
+  margin: 0;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.ladder li .ladder-age {
+  font-weight: 700;
+  /* Uses the default (dark, high-contrast) text color rather than the rung
+     accent — the accent hues don't meet WCAG AA 4.5:1 at this text size on a
+     white card; the numbered badge and left border already carry the color
+     coding as non-text UI accents. */
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.7rem;
+  margin-bottom: 0.4rem;
+}
+
+/* ─── FEATURE TOUR ────────────────────────────────── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature h4 {
+  font-weight: 800;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.feature p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ─── STORE BADGES ────────────────────────────────── */
+.store-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--ink);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: 0.15s;
+}
+
+.store-badge:hover {
+  background: #1a2338;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.store-badge svg {
+  flex: none;
+}
+
+.store-badge-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.store-badge-sub {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  font-weight: 600;
+}
+
+.store-badge-name {
+  font-family: "Baloo 2", cursive;
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.1;
+}
+
+/* ─── FOOTER ──────────────────────────────────────── */
+.site-footer {
+  background: var(--ink);
+  color: rgba(255, 255, 255, 0.55);
+  padding: 2.5rem 1.5rem;
+  font-size: 0.875rem;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.footer-brand .logo {
+  font-family: "Baloo 2", cursive;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.footer-brand .logo .t {
+  color: var(--teal);
+}
+
+.footer-brand .logo .c {
+  color: var(--coral);
+}
+
+.footer-brand p {
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  max-width: 240px;
+  line-height: 1.5;
+}
+
+.footer-col h4 {
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 0.75rem;
+}
+
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.footer-col a {
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 600;
+}
+
+.footer-col a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-bottom {
+  max-width: 1100px;
+  margin: 1.5rem auto 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.2rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* ─── MISC UTILS ──────────────────────────────────── */
+.text-center {
+  text-align: center;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.25rem;
+}
