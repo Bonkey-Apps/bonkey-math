@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bonkey Math — Race your way through math, counting to calculus-prep</title>
+    <meta
+      name="description"
+      content="Bonkey Math is an offline, privacy-first flash-card race for kids — solo personal-best races, untimed practice, and Bluetooth head-to-head, from counting to calculus-prep. No ads, no accounts, no tracking."
+    />
+    <link rel="icon" href="assets/bonkey-icon.png" type="image/png" />
+    <link rel="stylesheet" href="site.css" />
+    <style>
+      /* ── HERO (index-only decoration; shared components live in site.css) ── */
+      .hero {
+        background: linear-gradient(150deg, #1bc3b9 0%, #16b8ae 40%, #3fb6e8 100%);
+        color: #fff;
+        overflow: hidden;
+        position: relative;
+      }
+      .hero-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 5rem 1.5rem 4rem;
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+        flex-wrap: wrap;
+      }
+      .hero-copy {
+        flex: 1;
+        min-width: 280px;
+      }
+      .hero-copy h1 {
+        font-family: "Baloo 2", cursive;
+        font-weight: 800;
+        font-size: clamp(2.2rem, 5vw, 3.4rem);
+        line-height: 1.1;
+        text-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+      }
+      .hero-copy h1 .c {
+        color: #ffcb45;
+      }
+      .hero-copy .tagline {
+        font-size: 1.1rem;
+        margin: 1rem 0 2rem;
+        opacity: 0.92;
+        font-weight: 600;
+        max-width: 460px;
+      }
+      .hero-cta-row {
+        margin: 0 0 1.5rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #ffcb45;
+        color: #243042;
+        font-family: "Baloo 2", cursive;
+        font-weight: 800;
+        font-size: 1.1rem;
+        text-decoration: none;
+        padding: 0.85rem 2rem;
+        border-radius: 999px;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+        transition:
+          transform 0.12s ease,
+          box-shadow 0.12s ease;
+      }
+      .hero-cta:hover,
+      .hero-cta:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+        text-decoration: none;
+        outline: none;
+        color: #243042;
+      }
+      .hero-cta:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 3px;
+      }
+      .hero-cta-secondary {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        color: #fff;
+        font-weight: 800;
+        text-decoration: none;
+        padding: 0.8rem 1.6rem;
+        border-radius: 999px;
+      }
+      .hero-cta-secondary:hover,
+      .hero-cta-secondary:focus-visible {
+        background: rgba(255, 255, 255, 0.28);
+        text-decoration: none;
+        color: #fff;
+      }
+      .hero-badges {
+        display: flex;
+        gap: 0.85rem;
+        flex-wrap: wrap;
+      }
+      .hero-mascot {
+        width: 280px;
+        flex: none;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .hero-mascot img {
+        width: 260px;
+        height: 260px;
+        object-fit: contain;
+        filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.25));
+      }
+      .hero-stars {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .star {
+        position: absolute;
+        border-radius: 50%;
+        background: #fff;
+        opacity: 0.7;
+      }
+
+      /* ── SCROLL BAND ── */
+      .scroll-band {
+        background: var(--coral);
+        color: #fff;
+        padding: 0.7rem 1.5rem;
+        text-align: center;
+        font-family: "Baloo 2", cursive;
+        font-weight: 700;
+        font-size: 1.05rem;
+      }
+
+      /* ── FEATURES BAND ── */
+      .features-band {
+        background: var(--ink);
+        border-radius: 24px;
+        padding: 3rem 2rem;
+      }
+      .features-band .section-title {
+        color: #fff;
+        margin-bottom: 0.5rem;
+      }
+      .features-band .section-sub {
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 2.5rem;
+      }
+      .features-band .feature h4 {
+        color: #fff;
+      }
+
+      /* ── CTA ── */
+      .cta-band {
+        background: linear-gradient(135deg, var(--coral), #ff9a4a);
+        padding: 4rem 1.5rem;
+        text-align: center;
+        color: #fff;
+      }
+      .cta-band h2 {
+        font-family: "Baloo 2", cursive;
+        font-weight: 800;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        margin-bottom: 0.75rem;
+      }
+      .cta-band p {
+        font-size: 1.05rem;
+        opacity: 0.92;
+        font-weight: 600;
+        margin-bottom: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <nav class="site-nav">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <img src="assets/bonkey-icon.png" alt="" width="30" height="30" />
+          <span><span class="t">Bonkey</span><span class="c">Math</span></span>
+        </a>
+        <label for="nav-toggle" class="nav-hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </label>
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="index.html#curriculum">Curriculum</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="support.html">Support</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="/bonkey-math/app/" class="nav-cta">Play the free demo</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main id="main">
+      <!-- HERO -->
+      <header class="hero">
+        <div class="hero-stars">
+          <div class="star" style="width: 5px; height: 5px; top: 12%; left: 8%"></div>
+          <div
+            class="star"
+            style="width: 4px; height: 4px; top: 28%; left: 18%; opacity: 0.5"
+          ></div>
+          <div
+            class="star"
+            style="width: 6px; height: 6px; top: 18%; right: 22%; background: #ffcb45; opacity: 0.9"
+          ></div>
+          <div class="star" style="width: 4px; height: 4px; top: 60%; right: 8%"></div>
+          <div
+            class="star"
+            style="width: 5px; height: 5px; top: 42%; left: 52%; opacity: 0.4"
+          ></div>
+        </div>
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <h1>
+              Race your way through math —<br /><span class="c">counting to calculus-prep.</span>
+            </h1>
+            <p class="tagline">
+              Bonkey Math turns practice into a flash-card race: solo against your own best time,
+              untimed for genuine practice, or head-to-head with a friend over Bluetooth. Everything
+              runs on-device.
+            </p>
+            <div class="hero-cta-row">
+              <a href="/bonkey-math/app/" class="hero-cta">▶ Play the free demo</a>
+              <a href="index.html#curriculum" class="hero-cta-secondary">See the curriculum</a>
+            </div>
+            <div class="hero-badges">
+              <a href="download.html" class="store-badge">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M3.18 23.4a2.08 2.08 0 0 1-.68-.52A2.1 2.1 0 0 1 2 21.3V2.7C2 2.1 2.18 1.6 2.5 1.2L13.06 12 2.5 22.8c-.12-.1-.22-.22-.32-.38v.98z"
+                    fill="#EA4335"
+                  />
+                  <path
+                    d="M16.96 15.5 13.06 12l3.9-3.5 4.42 2.5c1.26.72 1.26 1.88 0 2.6l-4.42 2.5v-.1z"
+                    fill="#FBBC04"
+                  />
+                  <path
+                    d="M2.5 22.8 13.06 12 16.96 15.5 4.1 23.18A2.4 2.4 0 0 1 2.5 22.8z"
+                    fill="#34A853"
+                  />
+                  <path
+                    d="M2.5 1.2C3.08.8 3.76.8 4.1.82l12.86 7.68L13.06 12 2.5 1.2z"
+                    fill="#4285F4"
+                  />
+                </svg>
+                <div class="store-badge-text">
+                  <span class="store-badge-sub">Coming soon on</span>
+                  <span class="store-badge-name">Google Play</span>
+                </div>
+              </a>
+              <a href="download.html" class="store-badge">
+                <svg width="22" height="24" viewBox="0 0 814 1000" fill="white" aria-hidden="true">
+                  <path
+                    d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.5-155.5-127.4C46 702 0 624.9 0 550.2 0 407.5 100.5 307 184.4 307c48.9 0 89.8 33.1 121.8 33.1 30.6 0 76.6-35 135.3-35 53.6 0 150.6 3.2 212.8 86.2zm-198-110.4c28.3-35.7 47.5-85.2 47.5-134.7 0-6.8-.6-13.7-1.9-19.2-44.6 1.7-97.3 29.3-129.5 67.4-25.7 29.9-48.3 79.4-48.3 129.6 0 7.5 1.3 15 1.9 17.6 3.2.6 8.4 1.3 13.6 1.3 39.9 0 90.2-26.4 116.7-61z"
+                  />
+                </svg>
+                <div class="store-badge-text">
+                  <span class="store-badge-sub">Coming soon on the</span>
+                  <span class="store-badge-name">App Store</span>
+                </div>
+              </a>
+              <a href="download.html" class="store-badge">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="4" y="7" width="16" height="13" rx="2" />
+                  <path d="M9 7V5a3 3 0 0 1 6 0v2" />
+                  <path d="M4 16c4 2.5 12 2.5 16 0" />
+                </svg>
+                <div class="store-badge-text">
+                  <span class="store-badge-sub">Coming soon on the</span>
+                  <span class="store-badge-name">Amazon Appstore</span>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="hero-mascot">
+            <img
+              src="assets/bonkey-racer.png"
+              alt="Bonkey, a cream plush rabbit mascot in a space-print t-shirt and orange backpack, mid-sprint on a race track"
+            />
+          </div>
+        </div>
+      </header>
+
+      <div class="scroll-band">
+        No ads &nbsp;·&nbsp; No tracking &nbsp;·&nbsp; No accounts &nbsp;·&nbsp; Works fully offline
+      </div>
+
+      <!-- CURRICULUM -->
+      <section class="section" id="curriculum">
+        <h2 class="section-title">Eleven rungs, one race track</h2>
+        <p class="section-sub">
+          Every category is built from procedurally generated problems, not a fixed worksheet, so
+          there's always a fresh race to run. Tiers are freely selectable within an unlocked
+          category — no grinding required to reach the level a player is ready for.
+        </p>
+        <ol class="ladder">
+          <li style="--rung-color: #16b8ae">
+            <p class="ladder-age">Pre-K–K</p>
+            <h3>Counting &amp; Number Sense</h3>
+            <p>First numbers, comparing, and one-to-one counting.</p>
+          </li>
+          <li style="--rung-color: #16b8ae">
+            <p class="ladder-age">K–2nd grade</p>
+            <h3>Addition</h3>
+            <p>Single-digit sums up through triple-digit addition with carrying.</p>
+          </li>
+          <li style="--rung-color: #ff6f61">
+            <p class="ladder-age">1st–3rd grade</p>
+            <h3>Subtraction</h3>
+            <p>From single-digit facts to borrowing and negative results.</p>
+          </li>
+          <li style="--rung-color: #ffb13c">
+            <p class="ladder-age">2nd–4th grade</p>
+            <h3>Multiplication</h3>
+            <p>Times tables 1–12, then two-digit multiplication.</p>
+          </li>
+          <li style="--rung-color: #ffb13c">
+            <p class="ladder-age">3rd–5th grade</p>
+            <h3>Division</h3>
+            <p>Basic facts, remainders, and long division with two-digit divisors.</p>
+          </li>
+          <li style="--rung-color: #9b7be8">
+            <p class="ladder-age">5th–7th grade</p>
+            <h3>Higher Math</h3>
+            <p>Fractions, percentages, exponents, roots, and order of operations (PEMDAS).</p>
+          </li>
+          <li style="--rung-color: #16b8ae">
+            <p class="ladder-age">3rd–6th grade</p>
+            <h3>Geometry &amp; Measurement</h3>
+            <p>Shapes, angles, area, and units.</p>
+          </li>
+          <li style="--rung-color: #3fb6e8">
+            <p class="ladder-age">6th–8th grade</p>
+            <h3>Statistics &amp; Probability</h3>
+            <p>Averages, data, and chance.</p>
+          </li>
+          <li style="--rung-color: #9b7be8">
+            <p class="ladder-age">8th–10th grade</p>
+            <h3>Advanced Algebra</h3>
+            <p>Solving for the unknown, including negative exponents.</p>
+          </li>
+          <li style="--rung-color: #3fb6e8">
+            <p class="ladder-age">11th grade–college entry</p>
+            <h3>Trig &amp; Pre-Calculus</h3>
+            <p>The on-ramp to calculus.</p>
+          </li>
+          <li style="--rung-color: #ff6f61">
+            <p class="ladder-age">K–8th grade</p>
+            <h3>Word Problems</h3>
+            <p>Reading comprehension meets arithmetic, single-step to multi-step.</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- FEATURE TOUR -->
+      <section class="section" style="padding-top: 0">
+        <div class="features-band">
+          <h2 class="section-title">One engine, every way to play</h2>
+          <p class="section-sub">
+            Solo and head-to-head races share the same seeded, on-device problem generator — so
+            practice today carries straight into race night.
+          </p>
+          <div class="features-grid">
+            <div class="feature">
+              <div class="feature-icon" style="background: rgba(22, 184, 174, 0.2)">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#16B8AE"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="13" r="8" />
+                  <line x1="12" y1="13" x2="12" y2="9" />
+                  <line x1="9" y1="3" x2="15" y2="3" />
+                  <line x1="12" y1="3" x2="12" y2="5" />
+                </svg>
+              </div>
+              <div>
+                <h4>Solo race</h4>
+                <p>Race your own personal-best time for any category and tier.</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon" style="background: rgba(63, 182, 232, 0.2)">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#3FB6E8"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M4 20l4-1 11-11a2 2 0 0 0-3-3L5 16l-1 4z" />
+                  <path d="M14 6l3 3" />
+                </svg>
+              </div>
+              <div>
+                <h4>Practice mode</h4>
+                <p>
+                  Untimed, no-pressure practice for building real skill before the clock starts.
+                </p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon" style="background: rgba(155, 123, 232, 0.2)">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#9B7BE8"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M7 7l10 10-5 5V2l5 5L7 17" />
+                </svg>
+              </div>
+              <div>
+                <h4>Bluetooth head-to-head</h4>
+                <p>
+                  Two devices exchange a shared seed and race the identical problem set — no
+                  internet, no server, and problem content never leaves the device.
+                </p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon" style="background: rgba(255, 111, 97, 0.2)">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#FF6F61"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="2" y="8" width="20" height="10" rx="5" />
+                  <line x1="7" y1="11" x2="7" y2="15" />
+                  <line x1="5" y1="13" x2="9" y2="13" />
+                  <circle cx="16" cy="11" r="1" fill="#FF6F61" stroke="none" />
+                  <circle cx="18" cy="14" r="1" fill="#FF6F61" stroke="none" />
+                </svg>
+              </div>
+              <div>
+                <h4>Mini-games</h4>
+                <p>Bite-sized challenge modes layered on the same category and tier content.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-band">
+        <h2>Try it before you download</h2>
+        <p>
+          Play a free browser demo — no install, no account, no purchase. The full app adds
+          Bluetooth head-to-head races and every category and tier.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap">
+          <a href="/bonkey-math/app/" class="btn btn-dark btn-lg">Play the free demo</a>
+          <a href="download.html" class="btn btn-lg" style="background: #fff; color: var(--coral)"
+            >Get the app</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo"><span class="t">Bonkey</span><span class="c">Math</span></div>
+          <p>
+            An offline, privacy-first flash-card math race by Bonkey Apps. No ads, no accounts, no
+            tracking.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>App</h4>
+          <ul>
+            <li><a href="download.html">Download</a></li>
+            <li><a href="support.html">Support &amp; FAQ</a></li>
+            <li><a href="index.html#curriculum">Curriculum</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; Bonkey Apps. All rights reserved.</span>
+        <span><a href="mailto:bonkey.apps@gmail.com">bonkey.apps@gmail.com</a></span>
+      </div>
+    </footer>
+  </body>
+</html>
