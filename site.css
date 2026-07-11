@@ -638,6 +638,161 @@ img {
   gap: 0.5rem;
 }
 
+/* ─── CURRICULUM LADDER TAGS (free vs. paid) ──────── */
+.ladder-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.18rem 0.55rem;
+  border-radius: 99px;
+  margin-top: 0.7rem;
+}
+
+.ladder-tag-free {
+  background: rgba(22, 184, 174, 0.14);
+  color: var(--teal-dark);
+}
+
+/* Amber-family chip for paid content. Text color is darkened well past
+   --amber so small text clears WCAG AA 4.5:1 on the pale amber fill. */
+.ladder-tag-paid {
+  background: rgba(255, 177, 60, 0.18);
+  color: #935f00;
+}
+
+/* ─── PRICING ─────────────────────────────────────── */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.price-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem 1.75rem;
+  box-shadow: var(--card-shadow);
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.price-card.featured {
+  border-color: var(--teal);
+  box-shadow: 0 12px 34px rgba(22, 184, 174, 0.2);
+}
+
+.price-flag {
+  position: absolute;
+  top: -0.85rem;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.price-card h3 {
+  font-family: "Baloo 2", cursive;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.price-tag {
+  font-family: "Baloo 2", cursive;
+  font-weight: 800;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0.4rem 0 0.15rem;
+}
+
+.price-tag .cur {
+  font-size: 1.3rem;
+  vertical-align: super;
+  color: var(--muted);
+}
+
+.price-tag .star {
+  font-size: 1.2rem;
+  color: var(--coral-text);
+  vertical-align: super;
+}
+
+.price-per {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.9rem;
+}
+
+.price-desc {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.1rem;
+}
+
+.price-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0 0 1.6rem;
+  padding: 0;
+}
+
+.price-features li {
+  position: relative;
+  padding-left: 1.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #3d4757;
+  line-height: 1.45;
+}
+
+.price-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: -0.05rem;
+  color: var(--teal);
+  font-weight: 800;
+}
+
+.price-features li.off {
+  color: var(--muted);
+}
+
+.price-features li.off::before {
+  content: "–";
+  color: var(--muted);
+}
+
+.price-card .btn {
+  margin-top: auto;
+  justify-content: center;
+}
+
+.price-note {
+  margin: 1.75rem auto 0;
+  max-width: 640px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.price-note .star {
+  color: var(--coral-text);
+  font-weight: 800;
+}
+
 /* ─── MISC UTILS ──────────────────────────────────── */
 .text-center {
   text-align: center;
